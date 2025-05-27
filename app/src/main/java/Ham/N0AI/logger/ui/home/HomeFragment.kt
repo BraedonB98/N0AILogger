@@ -34,7 +34,10 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val view = binding.root
         recyclerView = view.findViewById(R.id.recyclerViewContacts)
-        adapter = ContactAdapter()
+        adapter = ContactAdapter { contact ->
+            ContactDetailsFragment.newInstance(contact)
+                .show(parentFragmentManager, "contact_details")
+        }
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = adapter
 

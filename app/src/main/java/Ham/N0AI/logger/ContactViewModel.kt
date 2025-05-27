@@ -13,4 +13,9 @@ class ContactViewModel : ViewModel() {
         _contacts.value?.add(0, contact) // Add to top
         _contacts.value = _contacts.value // Trigger observers
     }
+
+    fun deleteContact(contact: Contact) {
+        _contacts.value?.remove(contact)
+        _contacts.value = _contacts.value // Trigger observers
+    }
 }

@@ -12,19 +12,24 @@ import ham.n0ai.logger.R
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class ContactAdapter : ListAdapter<Contact, ContactAdapter.ContactViewHolder>(ContactDiffCallback()) {
+class ContactAdapter(
+    private val onContactClick: (Contact) -> Unit
+) : ListAdapter<Contact, ContactAdapter.ContactViewHolder>(ContactDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_contact, parent, false)
-        return ContactViewHolder(view)
+        return ContactViewHolder(view, onContactClick)
     }
 
     override fun onBindViewHolder(holder: ContactViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
 
-    class ContactViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class ContactViewHolder(
+        itemView: View,
+        private val onContactClick: (Contact) -> Unit
+    ) : RecyclerView.ViewHolder(itemView) {
         private val callsign: TextView = itemView.findViewById(R.id.textCallsign)
         private val mode: TextView = itemView.findViewById(R.id.textMode)
         private val frequency: TextView = itemView.findViewById(R.id.textFrequency)
@@ -59,6 +64,8 @@ class ContactAdapter : ListAdapter<Contact, ContactAdapter.ContactViewHolder>(Co
             }
 
             dateTime.text = "$formattedDate $formattedTime"
+
+            itemView.setOnClickListener { onContactClick(contact) }
         }
     }
 
