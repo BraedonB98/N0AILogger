@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AddContact">
+
+    <EditText
+        android:id="@+id/editTextCallsign"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Callsign"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="24dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"/>
+
+    <EditText
+        android:id="@+id/editTextDate"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Date"
+        android:focusable="true"
+        android:inputType="date"
+        app:layout_constraintTop_toBottomOf="@id/editTextCallsign"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"/>
+
+    <EditText
+        android:id="@+id/editTextTime"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Time"
+        android:focusable="true"
+        android:inputType="time"
+        app:layout_constraintTop_toBottomOf="@id/editTextDate"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"/>
+
+    <LinearLayout
+        android:id="@+id/layoutFrequency"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/editTextTime"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp">
+
+        <EditText
+            android:id="@+id/editTextFrequency"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:hint="Frequency"
+            android:inputType="numberDecimal" />
+
+        <Spinner
+            android:id="@+id/spinnerFrequencyUnit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:entries="@array/frequency_units"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"/>
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/editTextPower"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Power (W)"
+        android:inputType="numberDecimal"
+        app:layout_constraintTop_toBottomOf="@id/layoutFrequency"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"/>
+
+    <EditText
+        android:id="@+id/editTextMode"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Mode"
+        app:layout_constraintTop_toBottomOf="@id/editTextPower"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"/>
+
+    <EditText
+        android:id="@+id/editTextNotes"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:hint="Notes"
+        android:inputType="textMultiLine"
+        android:gravity="top|start"
+        app:layout_constraintTop_toBottomOf="@id/editTextMode"
+        app:layout_constraintBottom_toTopOf="@id/buttonSave"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="16dp" />
+
+    <Button
+        android:id="@+id/buttonSave"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Save"
+        app:layout_constraintTop_toBottomOf="@id/editTextNotes"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="24dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
