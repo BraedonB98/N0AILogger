@@ -56,18 +56,10 @@ class MainActivity : AppCompatActivity() {
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
         navView.setNavigationItemSelectedListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.nav_send_contacts -> {
-                    shareContactsCsv()
-                    true
-                }
-                else -> {
-                    // Default navigation handling
-                    val navController = findNavController(R.id.nav_host_fragment_content_main)
-                    val handled = navController.navigateUp(appBarConfiguration)
-                    handled
-                }
-            }
+            // Only handle existing drawer items here
+            val navController = findNavController(R.id.nav_host_fragment_content_main)
+            navController.navigateUp(appBarConfiguration)
+            true
         }
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         // Passing each menu ID as a set of Ids because each
