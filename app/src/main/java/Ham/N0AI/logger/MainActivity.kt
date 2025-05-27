@@ -35,11 +35,18 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         setSupportActionBar(binding.appBarMain.toolbar)
+
+        // Load contacts from CSV and set to ViewModel
+        val loadedContacts = ContactCsvUtils.loadContacts(this)
+        loadedContacts.forEach { contactViewModel.addContact(it) }
+
+        // Save to CSV whenever contacts change
+        contactViewModel.contacts.observe(this) { contacts ->
+            ContactCsvUtils.saveAllContacts(this, contacts)
+        }
 
         binding.appBarMain.fab.setOnClickListener {
             val intent = Intent(this, AddContact::class.java)
@@ -68,5 +75,11 @@ class MainActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    }
+
+    // Optionally, also save onPause as a backup
+    override fun onPause() {
+        super.onPause()
+        ContactCsvUtils.saveAllContacts(this, contactViewModel.contacts.value ?: emptyList())
     }
 }

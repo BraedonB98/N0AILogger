@@ -69,6 +69,8 @@ class AddContact : AppCompatActivity() {
                 mode = findViewById<EditText>(R.id.editTextMode).text.toString(),
                 notes = findViewById<EditText>(R.id.editTextNotes).text.toString()
             )
+            ContactCsvUtils.saveContact(this, contact) // <-- Save to CSV
+
             val resultIntent = Intent()
             resultIntent.putExtra("contact", contact)
             setResult(RESULT_OK, resultIntent)
