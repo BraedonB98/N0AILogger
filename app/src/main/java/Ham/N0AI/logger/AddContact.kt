@@ -2,8 +2,11 @@ package ham.n0ai.logger
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
 import android.widget.EditText
+import android.widget.Spinner
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -53,6 +56,23 @@ class AddContact : AppCompatActivity() {
                 calendar.set(Calendar.MINUTE, m)
                 editTextTime.setText(timeFormat.format(calendar.time))
             }, hour, minute, true).show()
+        }
+
+        findViewById<Button>(R.id.buttonSave).setOnClickListener {
+            val contact = Contact(
+                callsign = findViewById<EditText>(R.id.editTextCallsign).text.toString(),
+                date = findViewById<EditText>(R.id.editTextDate).text.toString(),
+                time = findViewById<EditText>(R.id.editTextTime).text.toString(),
+                frequency = findViewById<EditText>(R.id.editTextFrequency).text.toString(),
+                frequencyUnit = findViewById<Spinner>(R.id.spinnerFrequencyUnit).selectedItem.toString(),
+                power = findViewById<EditText>(R.id.editTextPower).text.toString(),
+                mode = findViewById<EditText>(R.id.editTextMode).text.toString(),
+                notes = findViewById<EditText>(R.id.editTextNotes).text.toString()
+            )
+            val resultIntent = Intent()
+            resultIntent.putExtra("contact", contact)
+            setResult(RESULT_OK, resultIntent)
+            finish()
         }
     }
 }

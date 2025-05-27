@@ -13,11 +13,25 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import ham.n0ai.logger.databinding.ActivityMainBinding
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
+import ham.n0ai.logger.ContactViewModel
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
+
+    private val contactViewModel: ContactViewModel by viewModels()
+
+    private val addContactLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == RESULT_OK) {
+            val contact = result.data?.getSerializableExtra("contact") as? Contact
+            contact?.let {
+                contactViewModel.addContact(it)
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,7 +43,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.appBarMain.fab.setOnClickListener {
             val intent = Intent(this, AddContact::class.java)
-            startActivity(intent)
+            addContactLauncher.launch(intent)
         }
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
