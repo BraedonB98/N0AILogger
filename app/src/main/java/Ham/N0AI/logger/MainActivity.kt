@@ -3,6 +3,7 @@ package ham.n0ai.logger
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
+import android.view.MenuItem
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
@@ -54,6 +55,20 @@ class MainActivity : AppCompatActivity() {
         }
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
+        navView.setNavigationItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.nav_send_contacts -> {
+                    shareContactsCsv()
+                    true
+                }
+                else -> {
+                    // Default navigation handling
+                    val navController = findNavController(R.id.nav_host_fragment_content_main)
+                    val handled = navController.navigateUp(appBarConfiguration)
+                    handled
+                }
+            }
+        }
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
@@ -67,9 +82,18 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.main, menu)
         return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_send_contacts -> {
+                shareContactsCsv()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -81,5 +105,25 @@ class MainActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
         ContactCsvUtils.saveAllContacts(this, contactViewModel.contacts.value ?: emptyList())
+    }
+
+    // Add this function to MainActivity
+    private fun shareContactsCsv() {
+        val csvFile = getFileStreamPath("contacts.csv")
+        if (!csvFile.exists()) {
+            Snackbar.make(binding.root, "No contacts file to share.", Snackbar.LENGTH_SHORT).show()
+            return
+        }
+        val uri = androidx.core.content.FileProvider.getUriForFile(
+            this,
+            "${packageName}.fileprovider",
+            csvFile
+        )
+        val intent = Intent(Intent.ACTION_SEND).apply {
+            type = "text/csv"
+            putExtra(Intent.EXTRA_STREAM, uri)
+            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        }
+        startActivity(Intent.createChooser(intent, "Share Contacts CSV"))
     }
 }
